@@ -1,19 +1,23 @@
-Nowadays, there are large and complex software systems that already
-exist or are being developed in almost all the different industries and
-sectors. A programming language used for developing a large share
-of these software systems is Java. Although it is true that software
-always had bugs and always will, it is very important that these developed 
-systems are more reliable. There are many different ways in
-which we can achieve this, one of which is the Design by Contract
+Today many large and complex software systems are being developed in Java. Although, software
+always had bugs despite these bugs it is very important that these developed 
+systems are more reliable. 
+\paragraph{}
+One way that we can help achieve this is the Design by Contract
 (DbC) paradigm, which was first introduced by Bertrand Meyer, the
-creator of Eiffel (an object-oriented programming language).
-Concept of DbC was introduced for software developers so that they
+creator of Eiffel.
+The concept of DbC was introduced for software developers so that they
 can produce more reliable software systems with a little extra cost.
-Using programming contracts allows developer to specify the details
+Using programming contracts allows developer to specify details
 such as input conditions and expected output conditions. Doing this
 makes it easy for the system to assign blame whenever software runs
-into some erroneous state. Once the blame is assigned it is easy for
+into some erroneous state. Once the blame is assigned it is easier for
 the developer to detect the cause, so that the appropriate actions can
-be taken to resolve the issue. My project aims at developing a library (written in Java), using which 
-developers can write contracts for their Java programs. These contracts will be evaluated
-by my library with the help of Prolog dictionary which acts as the database of facts. Using this contract system, developers would be able to increase the robustness of their software written in Java.
+be taken to resolve the issue. 
+\paragraph{} 
+My project develops a library in Java that allows 
+developers to write contracts for their Java programs. These contracts should be written using a custom annotation "@contract", which will have pre-conditions and post-conditions as it's attributes. These contracts are then evaluated
+by the library with the help of Prolog dictionary which acts as the database. 
+\paragraph{}
+Prolog is widely known for its implementations in the area of Artificial Intelligence and Natural Language Processing. In my implementation of contract programming, a Prolog file/s that contain set of facts and rules will form the basis of contract evaluation. To use Prolog for this purpose was first suggested to me by my mentor Dr. Thomas Austin. After analyzing and understanding its basic constructs, I found that it is very easy and efficient to write the set of rules using Prolog that you as a developer want your contracts confine to. Once you have these rules in place, my library will query the Prolog file to evaluate the validity of the contract conditions.
+\paragraph{}
+In this paper I will provide an example of how my library works with a sample application of Quicksort program. I will also talk about different performance tests and its results carried out on this sample application.       
