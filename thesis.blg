@@ -1,0 +1,20 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: thesis.aux
+A level-1 auxiliary file: chap1.aux
+A level-1 auxiliary file: chap2.aux
+A level-1 auxiliary file: chap3.aux
+A level-1 auxiliary file: chap4.aux
+The style file: uriref.bst
+A level-1 auxiliary file: appA.aux
+A level-1 auxiliary file: appB.aux
+Database file #1: references.bib
+Warning--I didn't find a database entry for "calderwood"
+ 
+-- University of Rhode Island references, version 1.1 (2005/07/12),
+--  based on IEEEtran.bst version 1.11 (2003/04/02) by Michael Shell.
+--  http://www.ele.uri.edu/info/thesis/uritex/uriref.bst
+-- See the manual "IEEEtran_bst_HOWTO.pdf" for usage information,
+--  available at http://www.ele.uri.edu/info/thesis/IEEEtran_bst_HOWTO.pdf
+Warning--empty journal in rajkumar2015designing
+
+Done.
+(There were 2 warnings)

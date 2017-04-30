@@ -1,8 +1,8 @@
 \chapter{Introduction}
 
-The software development lifecycle has evolved from just developing software systems to developing robust and reliable software systems. The reliability of software depends on its ability to perform its functions according to the given specifications and to handle exceptional or abnormal cases [1].
+The software development lifecycle has evolved from just developing software systems to developing robust and reliable software systems. The reliability of software depends on its ability to perform its functions according to the given specifications and to handle exceptional or abnormal cases \cite{ApplyingDesignByContract}.
 \paragraph{}
-The Design by Contract (DbC) methodology provides software developers with the ability to construct reliable software systems without much extra effort. DbC is useful throughout the process of building software, from analysis and design to implementation, documentation, debugging, and even project management[1]. A contract is made up of pre-conditions and post-conditions, which are used for making assertions in the given system. These different conditions define a relationship between the client (end user) and the supplier (software developer). This relationship is said to be broken if any of the conditions do not hold true.
+The Design by Contract (DbC) methodology provides software developers with the ability to construct reliable software systems without much extra effort. DbC is useful throughout the process of building software, from analysis and design to implementation, documentation, debugging, and even project management\cite{DesignByContractByExample}. A contract is made up of pre-conditions and post-conditions, which are used for making assertions in the given system. These different conditions define a relationship between the client (end user) and the supplier (software developer). This relationship is said to be broken if any of the conditions do not hold true.
 
 
 
@@ -14,7 +14,7 @@ The Design by Contract (DbC) methodology provides software developers with the a
 \item An invariant is something that needs to be true from the start until the end (throughout the execution), of the call to the method.
 \end{itemize}
 
-Given these constructs, if an application completes the execution without the failure of any of the pre or post conditions provided in the contract, then we can assert that the written code is doing what it is meant for and nothing less or nothing extra [1].
+Given these constructs, if an application completes the execution without the failure of any of the pre or post conditions provided in the contract, then we can assert that the written code is doing what it is meant for and nothing less or nothing extra \cite{DesignByContractByExample}.
 However, the quality of the assertion made depends on how well the contracts conditions are written. 
 
 \section{A Contract for an ATM System}
@@ -36,7 +36,7 @@ Now, once the client provides the correct amount to be withdrawn, the supplier (
 \newpage
 
 \item Deposit :
-Here the client is obliged to insert the amount to be deposited, which should be non-zero and less than the maximum limit allowed (let's say 1500\$). This forms the precondition for the contract of the Deposit function.
+Here the client is obliged to insert the amount to be deposited, which should be non-zero and less than the maximum limit allowed (let's say \$1500). This forms the precondition for the contract of the Deposit function.
 On successful execution of Deposit function, the supplier is obliged to increase the balance by the deposited amount. This forms the postcondition of the contract.
 \linebreak
 \begin{figure}[htb]
@@ -50,8 +50,8 @@ On successful execution of Deposit function, the supplier is obliged to increase
 
 
 \section{Prolog for Contracts}
-From above two examples function defined in the contract annotation as preconditions and postconditions form queries to a Prolog program. This Prolog program acts as database file for the library. When these queries are executed against these rules given in the Prolog program, it results into a boolean assertion which helps library evaluate if all the contracts were successful or if they had some failures.   
-Figure.~\ref{fig:PrologProgram} below shows an example of Prolog file that can be used with the bank ATM example illustrated in above section. Logical syntax of the Prolog code makes it very easy to understand and implement these rules.
+The above two examples show how contract annotations can be specified using  preconditions and postconditions to form queries to a Prolog program. This Prolog program acts as database file for the library. When these queries are executed against these rules given in the Prolog program, it results in a boolean assertion that helps the library evaluate if all the contracts were successful or if they had some failures.   
+Figure ~\ref{fig:PrologProgram} shows an example of a Prolog file that can be used with the bank ATM example illustrated in the above section. The logical syntax of the Prolog code makes it very easy to understand and implement these rules.
 
 \begin{figure}[htb]
 \centering

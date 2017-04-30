@@ -1,0 +1,55 @@
+\begin{thebibliography}{1}
+\providecommand{\url}[1]{#1}
+\addcustomcontentsline
+\csname url@rmstyle\endcsname
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
+\providecommand\BIBentryALTinterwordstretchfactor{4}
+\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand\BIBforeignlanguage[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
+
+\bibitem{ApplyingDesignByContract}
+B.~Meyer, ``Applying'design by contract,'' \emph{Computer}, vol.~25, no.~10,
+  pp. 40--51, 1992.
+
+\bibitem{DesignByContractByExample}
+R.~Mitchell and J.~McKim, \emph{Design by Contract, by Example}.\hskip 1em plus
+  0.5em minus 0.4em\relax Addison-Wesley, 2002.
+
+\bibitem{findler2014behavioral}
+R.~B. Findler, ``Behavioral software contracts,'' in \emph{ACM SIGPLAN
+  Notices}, vol.~49, no.~9.\hskip 1em plus 0.5em minus 0.4em\relax ACM, 2014,
+  pp. 137--138.
+
+\bibitem{ceballos2005constraint}
+R.~Ceballos, R.~M. Gasca, and D.~Borrego, ``Constraint satisfaction techniques
+  for diagnosing errors in design by contract software,'' in \emph{ACM SIGSOFT
+  Software Engineering Notes}, vol.~31, no.~2.\hskip 1em plus 0.5em minus
+  0.4em\relax ACM, 2005, p.~11.
+
+\bibitem{dimoulas2011correct}
+C.~Dimoulas, R.~B. Findler, C.~Flanagan, and M.~Felleisen, ``Correct blame for
+  contracts: no more scapegoating,'' in \emph{ACM SIGPLAN Notices}, vol.~46,
+  no.~1.\hskip 1em plus 0.5em minus 0.4em\relax ACM, 2011, pp. 215--226.
+
+\bibitem{rajkumar2015designing}
+N.~Rajkumar, ``Designing a programming contract library for java,'' 2015.
+
+\bibitem{briand2002investigating}
+L.~C. Briand, Y.~Labiche, and H.~Sun, ``Investigating the use of analysis
+  contracts to support fault isolation in object oriented code,'' in \emph{ACM
+  SIGSOFT Software Engineering Notes}, vol.~27, no.~4.\hskip 1em plus 0.5em
+  minus 0.4em\relax ACM, 2002, pp. 70--80.
+
+\end{thebibliography}

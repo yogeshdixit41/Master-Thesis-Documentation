@@ -1,6 +1,6 @@
 Today many large and complex software systems are being developed in Java. Although, software
-always had bugs despite these bugs it is very important that these developed 
-systems are more reliable. 
+always has bugs, it is very important that these developed 
+systems are more reliable despite these bugs. 
 \paragraph{}
 One way that we can help achieve this is the Design by Contract
 (DbC) paradigm, which was first introduced by Bertrand Meyer, the
@@ -15,9 +15,7 @@ the developer to detect the cause, so that the appropriate actions can
 be taken to resolve the issue. 
 \paragraph{} 
 My project develops a library in Java that allows 
-developers to write contracts for their Java programs. These contracts should be written using a custom annotation "@contract", which will have pre-conditions and post-conditions as it's attributes. These contracts are then evaluated
+developers to write contracts for their Java programs in Prolog. These contracts should be written using a custom annotation "@contract", which will have pre-conditions and post-conditions as its attributes. These contracts are then evaluated
 by the library with the help of Prolog dictionary which acts as the database. 
 \paragraph{}
-Prolog is widely known for its implementations in the area of Artificial Intelligence and Natural Language Processing. In my implementation of contract programming, a Prolog file/s that contain set of facts and rules will form the basis of contract evaluation. To use Prolog for this purpose was first suggested to me by my mentor Dr. Thomas Austin. After analyzing and understanding its basic constructs, I found that it is very easy and efficient to write the set of rules using Prolog that you as a developer want your contracts confine to. Once you have these rules in place, my library will query the Prolog file to evaluate the validity of the contract conditions.
-\paragraph{}
-In this paper I will provide an example of how my library works with a sample application of Quicksort program. I will also talk about different performance tests and its results carried out on this sample application.       
+Prolog's declarative style is a natural fit for writing contracts. With this project, I hope to simplify writing contracts for Java developers. In this paper, I review my implementation. I further discuss some performance tests to show the added overhead.       
