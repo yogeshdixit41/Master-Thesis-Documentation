@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 \providecommand{\url}[1]{#1}
 \addcustomcontentsline
 \csname url@rmstyle\endcsname
@@ -51,5 +51,36 @@ L.~C. Briand, Y.~Labiche, and H.~Sun, ``Investigating the use of analysis
   contracts to support fault isolation in object oriented code,'' in \emph{ACM
   SIGSOFT Software Engineering Notes}, vol.~27, no.~4.\hskip 1em plus 0.5em
   minus 0.4em\relax ACM, 2002, pp. 70--80.
+
+\bibitem{meyer1998building}
+B.~Meyer, ``Building bug-free oo software: An introduction to design by
+  contract,'' \emph{Availabe at
+  http://www.eiffel.com/values/design-by-contract/introduction/}, 1998.
+
+\bibitem{leavens2006design}
+G.~T. Leavens and Y.~Cheon, ``Design by contract with jml,'' 2006.
+
+\bibitem{JavaMode99:online}
+``Java modeling language - wikipedia,''
+  \url{https://en.wikipedia.org/wiki/Java_Modeling_Language}, (Accessed on
+  04/30/2017).
+
+\bibitem{Contract11:online}
+``Contracts.js,'' \url{http://www.contractsjs.org/}, (Accessed on 03/25/2017).
+
+\bibitem{RacketContracts}
+``7.1 contracts and boundaries,''
+  \url{https://docs.racket-lang.org/guide/contract-boundaries.html}, (Accessed
+  on 04/12/2017).
+
+\bibitem{RacketContractsFunc}
+``7.2 simple contracts on functions,''
+  \url{https://docs.racket-lang.org/guide/contract-func.html}, (Accessed on
+  04/14/2017).
+
+\bibitem{JavaAnnotationsTutorial}
+``Java annotations tutorial with examples,''
+  \url{http://beginnersbook.com/2014/09/java-annotations/}, (Accessed on
+  05/01/2017).
 
 \end{thebibliography}

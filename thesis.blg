@@ -7,7 +7,6 @@ The style file: uriref.bst
 A level-1 auxiliary file: appA.aux
 A level-1 auxiliary file: appB.aux
 Database file #1: references.bib
-Warning--I didn't find a database entry for "calderwood"
  
 -- University of Rhode Island references, version 1.1 (2005/07/12),
 --  based on IEEEtran.bst version 1.11 (2003/04/02) by Michael Shell.
@@ -17,4 +16,4 @@ Warning--I didn't find a database entry for "calderwood"
 Warning--empty journal in rajkumar2015designing
 
 Done.
-(There were 2 warnings)
+(There was 1 warning)

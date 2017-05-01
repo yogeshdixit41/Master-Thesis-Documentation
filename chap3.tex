@@ -1,5 +1,203 @@
 \chapter{Motivation and Contracts in Other Languages}
 
+When thinking of developing a new software, people think of using those software development tools and methods which will result into an increased overall productivity for the greater benefit. In object oriented world productivity benefits are not just the result of the correct approach but also depends on how much emphasis is given to the quality \cite{meyer1998building}.
+Quality of a software system depends primarily on how reliable the software system is \cite{meyer1998building}. 
+In object-oriented world reliable piece of code is given an extra importance because of its reusable nature. Reusability is an important property of object oriented programs, which will lose its relevance if the piece of code to be reused is not reliable and correct. 
+Java is one of the most widely used object-oriented programming language that is used for commercial software development. There are different ways such as static typing and automatic garbage collection in Java using which reliability can be ensured. But this is not enough and we still need a better approach towards developing reliable software system using Java. This forms the motivation behind the need of contract system in Java.
+This chapter focuses on different existing implementations of contract programming in Java and other languages along with their examples.
+
+\section{Existing Implementations}
+
+This section of the chapter lists few existing implementations of contract programming available in different programming languages. 
+
+\subsection{Design by Contract by JML}
+Java Modeling Language (JML) is a behavioral interface specification language for Java modules \cite{leavens2006design}. It provides set of some basic constructs that can be used to write contracts, in precondition and postcondition style for Java programs. Contracts in JML are provided using special annotation comments and are part of the Java code \cite{leavens2006design}. This contract definition, written in the form of comments  are converted into an executable code by the compiler. Thus if there any violation is detected while the code is executing, it can be immediately detected. 
+Below given is a simple example of how contracts written in Java using JML \cite{JavaMode99:online}.
+\linebreak
+
+\begin{minipage}{\linewidth}
+\lstset{language=Java, caption=JML Contract Example, captionpos=b, breaklines=true}       
+\begin{lstlisting}[frame=single]
+
+//@ requires 0 < amount && amount + balance < MAX_BALANCE;
+//@ assignable balance;
+//@ ensures balance == \old(balance) + amount;
+public void credit(final int amount)
+{
+  this.balance += amount;
+}
+
+\end{lstlisting}
+\end{minipage}
+
+In this example, lines starting with character "//@" denotes a JML notation, which will be picked up by compiler and converted into an executable code for assertions.
+JML uses a requires clause to implement a precondition and, ensures clause to implement a postcondition.
+Precondition in the above given example states that amount should be greater than zero and sum of amount and balance should remain less than MAX\_BALANCE allowed.
+Postcondition in the above given example states that result balance should be equal to the sum of old balance and amount.
+In JML, contracts can also be specified in the form of functions with return type. 
+\begin{minipage}{\linewidth}
+Below given example illustrates this type of contract \cite{leavens2006design}.
+
+\lstset{language=Java, caption=JML Contract Example with JML function, captionpos=b, breaklines=true}       
+\begin{lstlisting}[frame=single]
+
+package org.jmlspecs.samples.jmltutorial;
+import org.jmlspecs.models.JMLDouble;
+public class SqrtExample {
+public final static double eps = 0.0001;
+//@ requires x >= 0.0;
+//@ ensures JMLDouble
+		.approximatelyEqualTo(x, \result * \result, eps);
+public static double sqrt(double x) {
+return Math.sqrt(x);
+}
+}
+
+\end{lstlisting}
+\end{minipage}
 
 
+In the above given example, postcondition is specified with the help of a function approximatelyEqualsTo. approximatelyEqualsTo function checks if the produced result multiplied by itself is approximately equal to the input parameter x. If not, code will fail the postcondition causing an exception in the code execution. \linebreak
+Thus, JML provides set of constructs and tools which allows a Java programmer to specify Eiffel like contracts for their Java code. My project on similar lines provides systematic approach of writing contracts in Java using custom annotations, but, there are no extra tools like JML compiler that one needs to use and the contracts are execution ready as they are defined using Prolog.
 
+\subsection{Contracts.js for JavaScript}
+
+Contract.js is a library for JavaScript which provides a way to implement higher-order behavioral contract system. It uses sweet.js and lets JavaScript programmers write contracts which dictate how exactly the program should behave. This library implements a runtime check for validity of contracts and if fault occurs pinpoints to the exact section of the code which caused the failure with a descriptive message \cite{Contract11:online}.
+below is the syntax for writing contracts using Contract.js.
+
+\lstset{language=Java, caption=Contract syntax using Contract.js, captionpos=b, breaklines=true}       
+
+\begin{lstlisting}[frame=single]
+
+@ (...) -> ...
+function name(...) {
+    ...
+}
+\end{lstlisting}
+
+Below given is an example of contract writen for a JavaScript function using Contract.js.
+
+\lstset{language=Java, caption=Contract using Contract.js, captionpos=b, breaklines=true}       
+
+\begin{lstlisting}[frame=single]
+
+@ ({age: Num}) -> Bool
+function isAdult(o) {
+    return o.age > 18;
+}
+    
+\end{lstlisting}
+
+In this example, there are two parts to the contract specified for the function isAdult. First part states that any object o passed as an input parameter to the isAdult function should have a property named age with a value of type Num. In the second part of the contract, given a valid input function is obligated to return a Bool value at the end of the execution. Here we can relate the first part of the contract as precondition and the second part of the contract as postcondition. If program fails to satisfy any of these two program will exit with a well defined error message. Below given is an example of an error message that is generated when contract fails to hold true.
+\linebreak
+
+\begin{minipage}{\linewidth}
+\lstset{language=Java, caption=Example of a failed contract, captionpos=b}       
+\begin{lstlisting}[frame=single]
+
+isAdult({
+    name: "John",
+});
+    
+\end{lstlisting}
+\end{minipage}
+
+Here, as the age property is missing from the object that is passed in as input parameter to the isAdult function, it results into a failed contract. Below is the error that above piece of code generates,
+\linebreak
+
+\begin{minipage}{\linewidth}
+\lstset{language=Java, caption=Error message on failed contract, captionpos=b, breaklines=true}       
+\begin{lstlisting}[frame=single]
+
+Error: isAdult: contract violation
+expected: Num
+given: undefined
+in: the age property of
+    the 1st argument of
+    ({age: Num}) -> Bool
+function isAdult guarded at line: 2
+blaming: (calling context for isAdult)
+
+\end{lstlisting}
+\end{minipage}
+
+Another example of a failed contract with respect to the above contract, where property name exist but with an invalid type, is given below.
+
+\begin{minipage}{\linewidth}
+\lstset{language=Java, caption=Example of a failed contract, captionpos=b, breaklines=true}       
+\begin{lstlisting}[frame=single]
+
+isAdult({
+    name: "John",
+    age: "Five"
+});
+
+Error: isAdult: contract violation
+expected: Num
+given: Str
+in: the 1st field of
+    the age property of
+    the 1st argument of
+    ({age: Num}) -> Bool
+function isAdult guarded at line: 2
+blaming: (calling context for isAdult)
+    
+\end{lstlisting}
+\end{minipage}
+
+From these examples it is clear that contract system enforced by Contract.js is for checking type related errors that may occur in the code. It also provides number basic contracts that check for first order properties \cite{Contract11:online}.    
+
+\subsection{Contracts in Racket}
+
+Contracts in Racket programming language are mainly applied at module boundaries \cite{RacketContracts}. Thus contract constraints and promises are imposed on the values that are exported from the module. Contracts in Racket can be attached to a definition or a function using provide keyword \cite{RacketContracts}.
+Below is the example that illustrates a basic contract in Racket.
+
+\begin{minipage}{\linewidth}
+\lstset{caption=Basic contract example in Racket, captionpos=b, breaklines=true}       
+\begin{lstlisting}[frame=single]
+
+#lang racket
+
+(provide (contract-out [amount positive?]))
+ 
+(define amount ...)
+
+\end{lstlisting}
+\end{minipage}
+
+This specification in the above example states that value of the amount variable should always be positive. Every time client refers to amount, Racket's contract system keeps a check on the validation of the specified contract. If at some point amount is bind to a not positive number or to some value which is not at all a number, contract system will signal a contract violation and blame the module breaking the promise \cite{RacketContracts}. Below given is the example where above contract fails and contract violation error will be thrown.
+
+\lstset{caption=Contract violation example in Racket, captionpos=b, breaklines=true}       
+\begin{lstlisting}[frame=single]
+
+#lang racket
+
+(provide (contract-out [amount positive?]))
+ 
+(define amount 0)
+
+\end{lstlisting}
+
+Racket also allows contracts to be attached to functions \cite{RacketContractsFunc}. Contracts for functions in Racket are specified using a -> notation. Below given is an example of a bank module in which contracts are applied over functions of the module using -> notation.
+
+\begin{minipage}{\linewidth}
+\lstset{caption=Contract over functions in Racket, captionpos=b, breaklines=true}       
+\begin{lstlisting}[frame=single]
+
+#lang racket
+
+(provide (contract-out
+          [deposit (-> natural-number/c any)]
+          [balance (-> natural-number/c)]))
+
+(define amount 0)
+(define (deposit a) (set! amount (+ amount a)))
+(define (balance) amount)
+
+\end{lstlisting}
+\end{minipage}
+
+In this example, contracts are applied over two functions : deposit and balance using the -> notation. Contract specified here states that deposit is a function which accepts a nonnegative integer and returns some value that is not specified in the contract. And, balance is the function which takes in no argument and returns a nonnegative integer.
+
+\section{Contract Library for Java by Neha Rajkumar}
+This Java library \cite{rajkumar2015designing} developed by Neha at SJSU under the guidance of Dr. Thomas Austin uses custom annotations and AspectJ to implement contract system in Java. This library provides a custom Java annotation "@contract" using which a developer can provide preconditions and postconditions over a Java method. These pre and postconditions constraints are then checked at runtime for their validity using AspectJ and reflection. I will be extending this approach towards building my library.   	     

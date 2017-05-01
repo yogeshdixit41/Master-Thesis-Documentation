@@ -1,33 +1,66 @@
-\chapter{Cats}
+\chapter{Implementation}
 
-I do not usually talk about myself, but when I do, I talk about my cat.\\
+This chapter focuses on the implementation details of my project and how to use the library for implementing contracts in Java.
 
-In April 2010, the American economy was gripped by its most severe economic crisis in at least a generation.  There was in a deep recession.  It was in this climate that a great savior was born; her name is Muffins.  
+\section{Java Custom Annotations}
 
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=90mm]{./images/muffins.jpg}
-\caption{A Week Old Muffins}
-\end{figure}
+Annotations in Java is an element which provides information or data about the data. It can be termed as a form of metadata which provides more information at run-time or compile-time about the part of the code that is being annotated. Java annotations always start with the \@ symbol and can be of different forms. Some annotations like \@override annotation don't have any elements whereas some annotations like \@SuppressWarnings("unchecked") come with a element defined inside the parentheses. 
+Java also provides a way to define custom annotations type using \@interface. In my library I have used this method to create a custom annotation type "\@contract", using which developers will specify the contracts for their Java methods.
+Below given is the code block for creating the custom annotation type \@contract.
 
-She is the first cat I have ever owned.  She is a purebred Siberian.  Her interests include: \\
+\begin{minipage}{\linewidth}
+\lstset{language=Java, caption=CustomAnnotationtypeJava, captionpos=b, breaklines=true, showstringspaces=false}       
+\begin{lstlisting}[frame=single]
+
+package annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.METHOD )
+@Retention(RetentionPolicy.RUNTIME)
+
+public @interface Contract {
+		
+		String [] pre_cond () default "";
+		String [] post_cond() default "";
+		String [] source_files() default "no file to load";
+ }
+
+\end{lstlisting}
+\end{minipage}
+
+Target element specifies where exactly the annotation type can be used in the code \cite{JavaAnnotationsTutorial}. In the above implementation it specifies that \@contract annotation type can be used only with methods. 
+\@Retention element specifies till what point in the execution cycle of the code should the annotation of this type be available \cite{JavaAnnotationsTutorial}. In case of \@contract, @Retention specifies that it will be made available till Runtime.   
+\@Contract custom annotation type has 3 elements in it: pre\_cond, post\_cond and source\_files. All these three elements are of type arrays of Strings, that is each element can have multiple string values assigned when writing a contract. All these tree elements come with default values associated to it, which makes them non-compulsory elements of the contract type. Use of each of these elements is as follows:
 \begin{itemize}
-	\item Sleeping
-	\item Grooming herself
-	\item Twister
-\end{itemize}
+\item pre\_cond: This element is used to specify the preconditions of the contract.
+\item post\_cond: This element is used to specify the postconditions of the contract.
+\item source\_files: This element is used to specify the prolog files which should be referred to validate the preconditions and postconditions.
+\end{itemize} 
 
-The reason I chose to get a Siberian cat is because they are purported (perhaps dubiously) to be hypoallergenic. They are also a very healthy breed as they were more recently domesticated.\
+Below given is an example which illustrates how a contract can be written using above defined \@contract custom annotation type.
+\linebreak
 
-\section{Career Goals}
 
-I am impressed by the ground working done by the renowned dog rehabilitator Cesar Millan, host of the critically acclaimed television show "Dog Whisperer." It is my hope that I could have an equally successful television program which I will entail "Cat Telepathist"  where I will rehabilitate troubled and stray cats through the power of extrasensory perception (ESP).
+\begin{minipage}{\linewidth}
+\lstset{language=Java, caption=CustomAnnotationtypeJava, captionpos=b, breaklines=true}       
+\begin{lstlisting}[frame=single]
 
-If my "Cat Telepathist" show were not to find a niche with audiences, my second television show is modeled after the former television show "Crossing Over with John Edward." \cite{calderwood} I plan to call the show "You have Cat to be Kitten Me with Zayd Hammoudeh" and will be used to give grieving families the opportunity to communicate with their deceased feline family members.
+@Contract(
+pre_cond = { "isPositive(amount)", "lessThan(amount, @balance)" }, 
+post_cond = { "checkbalance(ans)" }, source_files = { "bankprolog.pl" })
 
-Other TV show ideas I would like to pursue include:
-\begin{itemize}
-	\item Cat Mustache Aficionado - A daily discussion of cat whiskers.
-	\item Alien vs. Predator vs. Cat - It is like the movie "Alien vs. Predator" but instead of it being a two party battle, it is a triple threat match with a cat.
-	\item Cat Hoarders - A show where we do an intervention with a cat that hoards some type of item.
-\end{itemize}
+\end{lstlisting}
+\end{minipage}
+
+In the above example of a contract, isPositive(amount) and lessThan(amount, \@balance) are declared as preconditions, checkbalance(ans) is the postcondition. "bankprolog.pl" is a Prolog file that is specified as a source for validating the contract conditions.
+
+\section{AspectJ and Reflection}
+
+\section{Prolog for Contract Validation}
+
+\section{} 
+  
