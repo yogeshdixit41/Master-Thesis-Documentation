@@ -83,4 +83,17 @@ G.~T. Leavens and Y.~Cheon, ``Design by contract with jml,'' 2006.
   \url{http://beginnersbook.com/2014/09/java-annotations/}, (Accessed on
   05/01/2017).
 
+\bibitem{AspectJWiki:online}
+``Aspectj - wikipedia,'' \url{https://en.wikipedia.org/wiki/AspectJ}, (Accessed
+  on 05/01/2017).
+
+\bibitem{LearnProlog:online}
+``Learn prolog now!''
+  \url{http://www.learnprolognow.org/lpnpage.php?pagetype=html&pageid=lpn-htmlch1},
+  (Accessed on 05/01/2017).
+
+\bibitem{JIProlog}
+``jiprolog/jiprolog wiki,'' \url{https://github.com/jiprolog/jiprolog/wiki},
+  (Accessed on 05/01/2017).
+
 \end{thebibliography}
