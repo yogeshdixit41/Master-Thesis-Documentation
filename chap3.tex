@@ -18,7 +18,6 @@ Below given is a simple example of how contracts written in Java using JML \cite
 
 \lstset{language=Java, caption=JML Contract Example, captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 //@ requires 0 < amount && amount + balance < MAX_BALANCE;
 //@ assignable balance;
 //@ ensures balance == \old(balance) + amount;
@@ -26,7 +25,6 @@ public void credit(final int amount)
 {
   this.balance += amount;
 }
-
 \end{lstlisting}
 \end{minipage}
 
@@ -40,7 +38,6 @@ Below given example illustrates this type of contract \cite{leavens2006design}.
 
 \lstset{language=Java, caption=JML Contract Example with JML function, captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 package org.jmlspecs.samples.jmltutorial;
 import org.jmlspecs.models.JMLDouble;
 public class SqrtExample {
@@ -52,7 +49,6 @@ public static double sqrt(double x) {
 return Math.sqrt(x);
 }
 }
-
 \end{lstlisting}
 \end{minipage}
 
@@ -65,11 +61,9 @@ Thus, JML provides set of constructs and tools which allows a Java programmer to
 Contract.js is a library for JavaScript which provides a way to implement higher-order behavioral contract system. It uses sweet.js and lets JavaScript programmers write contracts which dictate how exactly the program should behave. This library implements a runtime check for validity of contracts and if fault occurs pinpoints to the exact section of the code which caused the failure with a descriptive message \cite{Contract11:online}.
 below is the syntax for writing contracts using Contract.js. \linebreak
 
-
 \begin{minipage}{\linewidth}
 \lstset{language=Java, caption=Contract.js syntax , captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 @ (...) -> ...
 function name(...) {
     ...
@@ -83,12 +77,10 @@ Below given is an example of contract writen for a JavaScript function using Con
 \begin{minipage}{\linewidth}
 \lstset{language=Java, caption=Contract using Contract.js, captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 @ ({age: Num}) -> Bool
 function isAdult(o) {
     return o.age > 18;
-}
-    
+}    
 \end{lstlisting}
 \end{minipage}
 
@@ -98,11 +90,9 @@ In this example, there are two parts to the contract specified for the function 
 \begin{minipage}{\linewidth}
 \lstset{language=Java, caption=Example of a failed contract, captionpos=b}       
 \begin{lstlisting}[frame=single]
-
 isAdult({
     name: "John",
-});
-    
+});    
 \end{lstlisting}
 \end{minipage}
 
@@ -112,7 +102,6 @@ Here, as the age property is missing from the object that is passed in as input 
 \begin{minipage}{\linewidth}
 \lstset{language=Java, caption=Error message on failed contract, captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 Error: isAdult: contract violation
 expected: Num
 given: undefined
@@ -127,11 +116,10 @@ blaming: (calling context for isAdult)
 
 
 \begin{minipage}{\linewidth}
-Another example of a failed contract with respect to the above contract, where property name exist but with an invalid type, is given below.
+Another example of a failed contract with respect to the above contract, where property name exist but with an invalid type, is given below. \linebreak
 
 \lstset{language=Java, caption=Example of a failed contract, captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 isAdult({
     name: "John",
     age: "Five"
@@ -155,45 +143,34 @@ From these examples it is clear that contract system enforced by Contract.js is 
 \subsection{Contracts in Racket}
 
 Contracts in Racket programming language are mainly applied at module boundaries \cite{RacketContracts}. Thus contract constraints and promises are imposed on the values that are exported from the module. Contracts in Racket can be attached to a definition or a function using provide keyword \cite{RacketContracts}.
-Below is the example that illustrates a basic contract in Racket.
 
 \begin{minipage}{\linewidth}
+Below is the example that illustrates a basic contract in Racket.
 \lstset{caption=Basic contract example in Racket, captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 #lang racket
-
-(provide (contract-out [amount positive?]))
- 
+(provide (contract-out [amount positive?])) 
 (define amount ...)
-
 \end{lstlisting}
 \end{minipage}
 
 This specification in the above example states that value of the amount variable should always be positive. Every time client refers to amount, Racket's contract system keeps a check on the validation of the specified contract. If at some point amount is bind to a not positive number or to some value which is not at all a number, contract system will signal a contract violation and blame the module breaking the promise \cite{RacketContracts}. Below given is the example where above contract fails and contract violation error will be thrown. \linebreak
 
-
 \begin{minipage}{\linewidth}
 \lstset{caption=Contract violation example in Racket, captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 #lang racket
-
-(provide (contract-out [amount positive?]))
- 
+(provide (contract-out [amount positive?])) 
 (define amount 0)
-
 \end{lstlisting}
 \end{minipage}
 
-Racket also allows contracts to be attached to functions \cite{RacketContractsFunc}. Contracts for functions in Racket are specified using a -> notation. Below given is an example of a bank module in which contracts are applied over functions of the module using -> notation.
-
+Racket also allows contracts to be attached to functions \cite{RacketContractsFunc}. Contracts for functions in Racket are specified using a -> notation. 
 \begin{minipage}{\linewidth}
+Below given is an example of a bank module in which contracts are applied over functions of the module using -> notation.
 \lstset{caption=Contract over functions in Racket, captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 #lang racket
-
 (provide (contract-out
           [deposit (-> natural-number/c any)]
           [balance (-> natural-number/c)]))

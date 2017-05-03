@@ -136,11 +136,9 @@ likes(sam,Food) :-
         italian(Food).
 likes(sam,Food) :-
 	spanish(Food).
-
 likes(sam,chips).
 
 spanish(chicken_chillie).
-
 indian(chicken_curry).
 mild(chicken_curry).
 chinese(chow_mein).
@@ -247,9 +245,7 @@ Below given is a code snippet that illustrates connection achieved between Java 
 \begin{lstlisting}[frame=single]
 
 public class JIPInitializer {
-	
 	public final JIPEngine jip = new JIPEngine(); 
-	
 	public JIPInitializer()
 	{
 		jip.setDebug(false);
@@ -257,15 +253,9 @@ public class JIPInitializer {
 		jip.setEnvVariable("debug", "off");
 		try
 		{
-		
-			jip.consultFile("default_prolog_library.pl");
-			
-		}
-		
-		catch(JIPSyntaxErrorException ex)
+			jip.consultFile("default_prolog_library.pl");	
+		}catch(JIPSyntaxErrorException ex)
 		{
-		    // there is a syntax error in the query
-		    //ex.printStackTrace();
 			System.out.println("Exception loading prolog file : " + ex.getMessage());
 		    System.exit(0);
 		}
@@ -274,13 +264,10 @@ public class JIPInitializer {
 \end{lstlisting}
 \end{minipage}
 
-Above given code snippet illustrates how to create an instance of the JIPEngine class, which then will be used for loading a Prolog file and making API calls. JIPEngine is the main class of the JIProlog library \cite{JIProlog}. It supplies all the methods required for the Java-Prolog connection and making queries.
-
+Above given code snippet illustrates how to create an instance of the JIPEngine class, which then will be used for loading a Prolog file and making API calls. JIPEngine is the main class of the JIProlog library \cite{JIProlog}. It supplies all the methods required for the Java-Prolog connection and making queries. Code snippet below illustrates how to load a Prolog file using JIPEngine instance.
 \begin{minipage}{\linewidth}
-Code snippet below illustrates how to load a Prolog file using JIPEngine instance.
 \lstset{language=Java,caption=Loading a Prolog file using JIProlog API, captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 public void loadFile(String fileName)
 	{
 		try
@@ -303,7 +290,6 @@ Below snippet shows how we can submit a query using JIPEngine instance and read 
 
 \lstset{language=Java,caption= Prolog Query Using JIProlog API, captionpos=b, breaklines=true}       
 \begin{lstlisting}[frame=single]
-
 JIPQuery jipQuery = jip.openSynchronousQuery(queryString);
 boolean queryResult = readSolution(jipQuery);
 \end{lstlisting}

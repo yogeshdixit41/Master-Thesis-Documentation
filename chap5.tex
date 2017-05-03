@@ -1,0 +1,108 @@
+\chapter{Performance and Conclusion}
+
+This chapter illustrates sample programs using my contract library and also reviews the performance results of it on a Quicksort example. This chapter also provides a conclusion based on the results and dofferent aspects of contract programming discussed throughout this report.
+
+\section{Sample Contract for Bank System}
+
+
+\begin{minipage}{\linewidth}
+Below given is an example, which illustrates the usage of my contract library for a Bank class with withdraw and deposit methods.
+\lstset{language=Java, caption=Java Contracts for Bank class, captionpos=b, breaklines=true, showstringspaces=false}       
+\begin{lstlisting}[frame=single]
+public class Bank {
+	private String accOwner;
+	private Double balance;
+	
+	public Bank(String name)
+	{
+		this.accOwner = name;
+		this.balance = 0.0;
+	}
+	
+	public Double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Double balance) {
+		this.balance = balance;
+	}
+
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+Below given is an example, which illustrates the usage of my contract library for a Bank class with withdraw and deposit methods.
+\lstset{language=Java, caption=Java Contracts for Bank class, captionpos=b, breaklines=true, showstringspaces=false}       
+\begin{lstlisting}[frame=single]
+	@Contract(pre_cond = { "isPositive(amount)", "lessThan(amount, @balance)" }, 
+			  post_cond = { "checkbalance(ans)" }, source_files = { "bankprolog.pl" })
+	public double withdraw(Double amount)
+	{
+		this.balance = balance - amount;
+		return balance;
+	}
+	
+	@Contract(pre_cond = { "nonnegative(amount)" , "maxLimitNotBreached(amount)"}, 
+			  post_cond = { "checkbalance(ans)" }, source_files = { "bankprolog.pl" })
+	public double deposit(Double amount)
+	{
+		this.balance = balance + amount;
+		return balance;
+	}
+}
+
+
+\end{lstlisting}
+\end{minipage}
+ 
+
+\begin{minipage}{\linewidth}
+Below given is the Prolog file used for the contracts specified in the Bank class program.
+
+\lstset{caption=bankprolog.pl, captionpos=b, breaklines=true, showstringspaces=false}       
+\begin{lstlisting}[frame=single]
+
+isPositive(Var):- Var > 0.
+
+lessThan(Var1, Var2):- Var1 < Var2.
+
+checkbalance(Bal):- Bal > 0.
+
+maxLimitNotBreached(Amt):- Amt < 1000.
+
+\end{lstlisting}
+\end{minipage}
+
+
+\begin{minipage}{\linewidth}
+With above contracts and the Prolog file, below are the results produced when the following code is executed.
+\lstset{language=Java, caption=Java Contracts for Bank class, captionpos=b, breaklines=true, showstringspaces=false}       
+\begin{lstlisting}[frame=single]
+	public static void main(String [] args)
+	{
+		Bank newAccount = new Bank("Test Account");
+		newAccount.deposit(100.00);
+		newAccount.deposit(700.00);
+		newAccount.withdraw(900.00);
+	}
+\end{lstlisting}
+\end{minipage}
+
+As we can see here, total amount in the Test Account after two calls for deposit method is 800. When a withdraw method call with 900 as input parameter is made it fails the "lessThan(amount, \@balance)"  precondition on withdraw method. This condition rule checks if the amount (parameter) that is to be withdrawn from the account is less than the total balance in the account. In our case since amount is greater than the balance it causes the contract failure and program exits with the exception given below.
+
+\begin{verbatim}[frame=single]
+Exception in thread "main" annotations.ContractFailException: Contract failure :
+ preconditions failed for lessThan(900.0, 800.0)
+	at annotations.JIPInitializer.checkPreCond(JIPInitializer.java:92)
+	at annotations.asp.ajc\$before\$annotations_asp\$1\$78590bef(asp.java:68)
+	at com.yd.contractprogramming.Bank.withdraw(Bank.java:34)
+	at com.yd.contractprogramming.Bank.main(Bank.java:51)
+\end{verbatim}
+
+
+\section{Contract for Quicksort and Performance Results}
+
+
+
+
+
