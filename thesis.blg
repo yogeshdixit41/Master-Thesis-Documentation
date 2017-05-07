@@ -3,6 +3,7 @@ A level-1 auxiliary file: chap1.aux
 A level-1 auxiliary file: chap2.aux
 A level-1 auxiliary file: chap3.aux
 A level-1 auxiliary file: chap4.aux
+A level-1 auxiliary file: chap5.aux
 The style file: uriref.bst
 Database file #1: references.bib
  
@@ -11,7 +12,5 @@ Database file #1: references.bib
 --  http://www.ele.uri.edu/info/thesis/uritex/uriref.bst
 -- See the manual "IEEEtran_bst_HOWTO.pdf" for usage information,
 --  available at http://www.ele.uri.edu/info/thesis/IEEEtran_bst_HOWTO.pdf
-Warning--empty journal in rajkumar2015designing
 
 Done.
-(There was 1 warning)

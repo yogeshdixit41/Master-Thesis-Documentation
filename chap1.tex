@@ -26,12 +26,20 @@ In this example, the ATM system is our supplier and a person using the ATM syste
 Here the client is obliged to enter a non-zero amount to be withdrawn from his/her account, which also should be less than the balance in his/her account. This obligation for the client forms the precondition of our contract.
 Now, once the client provides the correct amount to be withdrawn, the supplier (ATM system) is obliged to update the balance by decrementing the input amount from it. This obligation for the supplier forms the postcondition of our contract.
 \linebreak
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.5\textwidth]{images/WithdrawContractExample.PNG}
-\caption{Contract for Withdraw method.} 
-\label{fig:WithdrawContract}
-\end{figure}
+
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single, language=Java, caption={Withdraw Contract Example}, label={WithdrawExample}, captionpos=b, breaklines=true]
+
+@Contract(pre_cond = { "isPositive(amount)", "lessThan(amount, @balance)" }, 
+			  post_cond = { "checkbalance(ans)" }, source_files = { "bankprolog.pl" })
+	public double withdraw(Double amount)
+	{
+		this.balance = balance - amount;
+		return balance;
+	}
+\end{lstlisting}
+\end{minipage}
 
 \newpage
 
@@ -39,23 +47,34 @@ Now, once the client provides the correct amount to be withdrawn, the supplier (
 Here the client is obliged to insert the amount to be deposited, which should be non-zero and less than the maximum limit allowed (let's say \$1500). This forms the precondition for the contract of the Deposit function.
 On successful execution of Deposit function, the supplier is obliged to increase the balance by the deposited amount. This forms the postcondition of the contract.
 \linebreak
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.5\textwidth]{images/DepositContract.PNG}
-\caption{Contract for Deposit method.} 
-\label{fig:DepositContract}
-\end{figure}  
+
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single, language=Java, caption={Withdraw Contract Example}, label={WithdrawExample}, captionpos=b, breaklines=true]
+
+@Contract(pre_cond = {"nonnegative(amount)","maxLimitNotBreached(amount)"},post_cond = { "checkbalance(ans)" }, source_files = { "bankprolog.pl" })
+	public double deposit(Double amount)
+	{
+		this.balance = balance + amount;
+		return balance;
+	} 
+\end{lstlisting}
+\end{minipage}
       
 \end{itemize}
 
 
 \section{Prolog for Contracts}
 The above two examples show how contract annotations can be specified using  preconditions and postconditions to form queries to a Prolog program. This Prolog program acts as database file for the library. When these queries are executed against these rules given in the Prolog program, it results in a boolean assertion that helps the library evaluate if all the contracts were successful or if they had some failures.   
-Figure ~\ref{fig:PrologProgram} shows an example of a Prolog file that can be used with the bank ATM example illustrated in the above section. The logical syntax of the Prolog code makes it very easy to understand and implement these rules.
+Listing ~\ref{PrologProgram} shows an example of a Prolog file that can be used with the bank ATM example illustrated in the above section. The logical syntax of the Prolog code makes it very easy to understand and implement these rules.\linebreak
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.5\textwidth]{images/PrologDatabase.PNG}
-\caption{Prolog File with Contract Rules.} 
-\label{fig:PrologProgram}
-\end{figure} 
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single, language=Java, caption={Prolog File with Contract Rules}, label={PrologProgram}, captionpos=b, breaklines=true]
+isPositive(Var):- Var > 0.
+lessThan(Var1, Var2):- Var1 < Var2.
+checkbalance(Bal):- Bal > 0.
+nonzero(Var) :- Var \= 0.
+maxLimitNotBreached(Amt):- Amt < 1000.
+\end{lstlisting}
+\end{minipage} 

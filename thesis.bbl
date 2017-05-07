@@ -44,7 +44,8 @@ C.~Dimoulas, R.~B. Findler, C.~Flanagan, and M.~Felleisen, ``Correct blame for
   no.~1.\hskip 1em plus 0.5em minus 0.4em\relax ACM, 2011, pp. 215--226.
 
 \bibitem{rajkumar2015designing}
-N.~Rajkumar, ``Designing a programming contract library for java,'' 2015.
+N.~Rajkumar, ``Designing a programming contract library for java,'' Master's
+  thesis, San Jose State University, 2015.
 
 \bibitem{briand2002investigating}
 L.~C. Briand, Y.~Labiche, and H.~Sun, ``Investigating the use of analysis
@@ -57,16 +58,10 @@ B.~Meyer, ``Building bug-free oo software: An introduction to design by
   contract,'' \emph{Availabe at
   http://www.eiffel.com/values/design-by-contract/introduction/}, 1998.
 
-\bibitem{leavens2006design}
-G.~T. Leavens and Y.~Cheon, ``Design by contract with jml,'' 2006.
-
-\bibitem{JavaMode99:online}
-``Java modeling language - wikipedia,''
-  \url{https://en.wikipedia.org/wiki/Java_Modeling_Language}, (Accessed on
-  04/30/2017).
-
-\bibitem{Contract11:online}
-``Contracts.js,'' \url{http://www.contractsjs.org/}, (Accessed on 03/25/2017).
+\bibitem{WhyisJav37:online}
+``Why is java the most popular programming language? (oracle university),''
+  \url{https://blogs.oracle.com/oracleuniversity/entry/why_is_java_the_most},
+  (Accessed on 04/04/2017).
 
 \bibitem{RacketContracts}
 ``7.1 contracts and boundaries,''
@@ -77,6 +72,17 @@ G.~T. Leavens and Y.~Cheon, ``Design by contract with jml,'' 2006.
 ``7.2 simple contracts on functions,''
   \url{https://docs.racket-lang.org/guide/contract-func.html}, (Accessed on
   04/14/2017).
+
+\bibitem{leavens2006design}
+G.~T. Leavens and Y.~Cheon, ``Design by contract with jml,'' 2006.
+
+\bibitem{JavaMode99:online}
+``Java modeling language - wikipedia,''
+  \url{https://en.wikipedia.org/wiki/Java_Modeling_Language}, (Accessed on
+  04/30/2017).
+
+\bibitem{Contract11:online}
+``Contracts.js,'' \url{http://www.contractsjs.org/}, (Accessed on 03/25/2017).
 
 \bibitem{JavaAnnotationsTutorial}
 ``Java annotations tutorial with examples,''

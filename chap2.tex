@@ -4,14 +4,26 @@ Contract Programming, also known as Design by Contract, is a methodology that ca
 
 \section{History and Background}
 
-Use of contracts in the form logical assertions was introduced by Pranas in the year 1972 \cite{findler2014behavioral}. But, the full fledged contract system was introduced in the form of Design by Contract philosophy to the public by Bertrand Meyer as a part of his programming language named Eiffel \cite{findler2014behavioral}. Contract programming is an integral part of Eiffel, but the methodology in itself can be used in any language. Figure ~\ref{fig:EiffelContract} shows an example of how contracts are written in the Eiffel programming language \cite{DesignByContractByExample}.
+Use of contracts in the form logical assertions was introduced by Pranas in the year 1972 \cite{findler2014behavioral}. But, the full fledged contract system was introduced in the form of Design by Contract philosophy to the public by Bertrand Meyer as a part of his programming language named Eiffel \cite{findler2014behavioral}. Contract programming is an integral part of Eiffel, but the methodology in itself can be used in any language. Listing ~\ref{EiffelContract} shows an example of how contracts are written in the Eiffel programming language \cite{DesignByContractByExample}.
 
-\begin{figure}[htb]
-\centering
-\includegraphics[width=0.5\textwidth]{images/EiffelContract.jpg}
-\caption{Contract in Eiffel.} 
-\label{fig:EiffelContract}
-\end{figure}
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single, language=Java, caption={Contract in Eiffel \cite{meyer1998building}}, label={EiffelContract}, captionpos=b, breaklines=true]
+
+put (x: ELEMENT; key: STRING) is
+		-- Insert x so that it will be retrievable through key.
+	require
+		count <= capacity
+		not key.empty
+	do
+		... Some insertion algorithm ...
+	ensure
+		has (x)
+		item (key) = x 
+		count = old count + 1
+	end
+\end{lstlisting}
+\end{minipage}
+
 
 Another important aspect of contract programming is that it helps build and design a robust and fault tolerant software system \cite{ceballos2005constraint}, which is why it has been used repeatedly by many developers in the form of libraries or as a language feature.
 Contract programming uses a contract agreed upon by both the developer of the software and the user of the software. In Meyer's terms, a developer is the supplier and a user is the client \cite{ApplyingDesignByContract}.  
@@ -26,15 +38,20 @@ Careful use of DbC by software developers can yield better designed systems. Thi
 
 \subsection{Meaningful Exceptions}
 In the case of DbC, a program runs into an exception only when it fails the contract. As a result, it is very easy to identify the exact cause behind its occurrence. For example, if the exception occurred because of a failed precondition then the cause is that some inconsistent or bad input values were passed to the method routine. This helps the programmer develop clear and meaningful exceptions that can be easily understood by the client.
-Figure ~\ref{fig:FailedContract} shows an example of an exception thrown as a result of a failed contract. 
+Given below is an example of an exception thrown as a result of a failed contract. 
 \linebreak
-\linebreak
-\begin{figure}[htb]
-\centering
-\includegraphics[width=1.0\textwidth]{images/ContractFailedException.PNG}
-\caption{Exception on Failed Contract.} 
-\label{fig:FailedContract}
-\end{figure}
+
+\begin{verbatim}
+
+\verb Exception in thread "main" annotations.ContractFailException: Contract failure :
+\verb  preconditions failed for lessThan(900.0, 600.0)
+	at annotations.JIPInitializer.checkPreCond(JIPInitializer.java:92)
+	at annotations.asp.ajc$before$annotations_asp$1$78590bef(asp.java:68)
+	at com.yd.contractprogramming.Bank.withdraw(Bank.java:34)
+	at com.yd.contractprogramming.Bank.main(Bank.java:51)
+
+\end{verbatim}
+
 
 \subsection{Better Documentation}
 Contracts defined for the system by the developer are part of the code that is visible to the client. The client can read through the contracts that are defined by the supplier for the system, forming an easy means of documentation. Also, it may happen that the user made some modifications to the code but failed to update the document. However, since contracts are an integral part of the code that change if the associated code logic has changed, they form a consistent form of documentation. Also, contracts provide specific and precise information about the method or routine that they are attached to.

@@ -1,14 +1,13 @@
-\chapter{Performance and Conclusion}
+\chapter{Examples and Performance}\label{performance}
 
 This chapter illustrates sample programs using my contract library and also reviews the performance results of it on a Quicksort example. This chapter also provides a conclusion based on the results and dofferent aspects of contract programming discussed throughout this report.
 
 \section{Sample Contract for Bank System}
 
+Listing \ref{BankExample} shows an example, which illustrates the usage of my contract library for a Bank class with withdraw and deposit methods. \linebreak
 
 \begin{minipage}{\linewidth}
-Below given is an example, which illustrates the usage of my contract library for a Bank class with withdraw and deposit methods.
-\lstset{language=Java, caption=Java Contracts for Bank class, captionpos=b, breaklines=true, showstringspaces=false}       
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}[frame=single, language=Java, caption={Java Contracts for Bank class - I}, label={BankExample}, captionpos=b, breaklines=true, showstringspaces=false]
 public class Bank {
 	private String accOwner;
 	private Double balance;
@@ -31,78 +30,263 @@ public class Bank {
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-Below given is an example, which illustrates the usage of my contract library for a Bank class with withdraw and deposit methods.
-\lstset{language=Java, caption=Java Contracts for Bank class, captionpos=b, breaklines=true, showstringspaces=false}       
-\begin{lstlisting}[frame=single]
-	@Contract(pre_cond = { "isPositive(amount)", "lessThan(amount, @balance)" }, 
-			  post_cond = { "checkbalance(ans)" }, source_files = { "bankprolog.pl" })
-	public double withdraw(Double amount)
-	{
-		this.balance = balance - amount;
-		return balance;
-	}
+
+       
+\begin{lstlisting}[frame=single, language=Java, caption={Java Contracts for Bank class - II}, label={BankExample2}, captionpos=b, breaklines=true, showstringspaces=false]
+@Contract(pre_cond = { "isPositive(amount)", "lessThan(amount, @balance)" },post_cond = { "checkbalance(ans)" }, source_files = { "bankprolog.pl" })
+public double withdraw(Double amount)
+{
+	this.balance = balance - amount;
+	return balance;
+}
 	
-	@Contract(pre_cond = { "nonnegative(amount)" , "maxLimitNotBreached(amount)"}, 
-			  post_cond = { "checkbalance(ans)" }, source_files = { "bankprolog.pl" })
-	public double deposit(Double amount)
-	{
-		this.balance = balance + amount;
-		return balance;
-	}
+@Contract(pre_cond = { "nonnegative(amount)" , "maxLimitNotBreached(amount)"}, post_cond = { "checkbalance(ans)" }, source_files = { "bankprolog.pl" })
+public double deposit(Double amount)
+{
+	this.balance = balance + amount;
+	return balance;
 }
 
 
 \end{lstlisting}
 \end{minipage}
  
+\vspace{5mm}
 
-\begin{minipage}{\linewidth}
-Below given is the Prolog file used for the contracts specified in the Bank class program.
-
-\lstset{caption=bankprolog.pl, captionpos=b, breaklines=true, showstringspaces=false}       
-\begin{lstlisting}[frame=single]
-
+\begin{minipage}{\linewidth}     
+\begin{lstlisting}[frame=single, caption={bankprolog.pl}, label={PrologFile}, captionpos=b, breaklines=true, showstringspaces=false]
 isPositive(Var):- Var > 0.
-
 lessThan(Var1, Var2):- Var1 < Var2.
-
 checkbalance(Bal):- Bal > 0.
-
 maxLimitNotBreached(Amt):- Amt < 1000.
-
 \end{lstlisting}
 \end{minipage}
 
+\vspace{8mm}
 
-\begin{minipage}{\linewidth}
-With above contracts and the Prolog file, below are the results produced when the following code is executed.
-\lstset{language=Java, caption=Java Contracts for Bank class, captionpos=b, breaklines=true, showstringspaces=false}       
-\begin{lstlisting}[frame=single]
-	public static void main(String [] args)
-	{
-		Bank newAccount = new Bank("Test Account");
-		newAccount.deposit(100.00);
-		newAccount.deposit(700.00);
-		newAccount.withdraw(900.00);
-	}
+\begin{minipage}{\linewidth}       
+\begin{lstlisting}[frame=single, language=Java, caption={Java Contracts for Bank class}, label={BankExecution}, captionpos=b, breaklines=true, showstringspaces=false]
+public static void main(String [] args)
+{
+	Bank newAccount = new Bank("Test Account");
+	newAccount.deposit(100.00);
+	newAccount.deposit(700.00);
+	newAccount.withdraw(900.00);
+}
 \end{lstlisting}
 \end{minipage}
 
-As we can see here, total amount in the Test Account after two calls for deposit method is 800. When a withdraw method call with 900 as input parameter is made it fails the "lessThan(amount, \@balance)"  precondition on withdraw method. This condition rule checks if the amount (parameter) that is to be withdrawn from the account is less than the total balance in the account. In our case since amount is greater than the balance it causes the contract failure and program exits with the exception given below.
-
-\begin{verbatim}[frame=single]
+As we can see in the code given in the Listing \ref{BankExecution}, total amount in the \tt{Test Account} after two calls for \tt{deposit} method is 800. When a withdraw method call with 900 as input parameter is made it fails the \tt{lessThan(amount, @balance)}  precondition on withdraw method. This condition rule checks if the amount (parameter) that is to be withdrawn from the account is less than the total balance in the account. In our case since amount is greater than the balance it causes the contract failure and program exits with the exception given below. \linebreak
+   
+\begin{verbatim}
 Exception in thread "main" annotations.ContractFailException: Contract failure :
  preconditions failed for lessThan(900.0, 800.0)
 	at annotations.JIPInitializer.checkPreCond(JIPInitializer.java:92)
 	at annotations.asp.ajc\$before\$annotations_asp\$1\$78590bef(asp.java:68)
 	at com.yd.contractprogramming.Bank.withdraw(Bank.java:34)
 	at com.yd.contractprogramming.Bank.main(Bank.java:51)
+
 \end{verbatim}
 
 
 \section{Contract for Quicksort and Performance Results}
 
+Listing \ref{QuicksortContract} shows an example of a quicksort program that uses contract library to validate functionality.\linebreak
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single, language=Java, caption={Quicksort Program with Contract - 1}, label={QuicksortContract}, captionpos=b, breaklines=true]
+private void sort(int low, int high)
+{
+	if(low < high)
+	{
+		int pi = partition(low,high);
+		sort(low, pi-1);
+		sort(pi+1, high);
+	}
+}
+
+\end{lstlisting}
+\end{minipage}
+
+\vspace{5mm}
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single, language=Java, caption={Quicksort Program with Contract - 1}, label={QuicksortContract}, captionpos=b, breaklines=true]	
+@Contract(pre_cond = { "" }, post_cond = { "checkPivotValid(ans,@arr)." }, source_files = {"Sublist.pl"})
+int partition(int low, int high)
+{
+	int pivot = arr[high];
+	int i = (low-1);
+	for(int j=low;j<=high-1;j++)
+	{
+		if(arr[j] <= pivot){
+			i++;
+			int temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+		}
+	}
+		
+	int temp = arr[i+1];
+	arr[i+1] = arr[high];
+	arr[high] = temp;	
+	return i+1;
+}
+\end{lstlisting}
+\end{minipage}
 
 
+In the code given in Listing \ref{QuicksortContract} a postcondition contract is used to validate the \tt{partition} function. This contract checks, if the selected pivot is correct at each recursive call. Execution time metrics collected over different size inputs for this code is given in the table \ref{tab:PartitionWithContracts}.
 
+\begin{table}[htb]
+\caption{Execution Time Metrics for Contract Over Partition Method\label{tab:PartitionWithContracts}}
+\begin{center}
+\begin{tabular}{c||c}
+\hline
+Input Size & Execution Time (In Nano-Seconds) \\
+\hline
+\hline
+100 & 2690400443\\
+%\hline
+500 & 152304489998\\
+%\hline
+1000 & 652321093085\\
 
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+In this example, contract is specified over the partition method which has the almost all the logic code required for the quicksort function. Thus contract specified, is validating the pivot value at each recursive call, ultimately resulting into an increased execution time. But, developer can be sure about the correctness of the code and if there is some error, it can be easily traced. 
+Execution time can be reduced if the position of the contract is changed as shown in the code given in Listing \ref{QuicksortImprovedContract}. Now, contract is used over the \tt{sortwrapper} method instead of \tt{partition} method. Thus, contract will validate the result only once the complete execution is over and not at each recursive call. This will still validate, if the result array is sorted and if not will throw an error. But in this code developer won't be able to figure out the error, if there exists one in the partition method if something goes wrong.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single, language=Java, captionpos=b, breaklines=true]
+int partition(int low, int high)
+{
+	int pivot = arr[high];
+	int i = (low-1);
+	for(int j=low;j<=high-1;j++)
+	{
+		if(arr[j] <= pivot){
+			i++;
+			int temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+		}
+	}
+	int temp = arr[i+1];
+	arr[i+1] = arr[high];
+	arr[high] = temp;
+	return i+1;
+}
+private void sort(int low, int high)
+{
+	if(low < high){
+		int pi = partition(low,high);
+		sort(low, pi-1);
+		sort(pi+1, high);
+	}
+}
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single, language=Java, caption={Quicksort Program with Contract - 2}, label={QuicksortImprovedContract}, captionpos=b, breaklines=true]
+
+@Contract(pre_cond = { "" }, post_cond = { "ordered(ans)." }, source_files = {"mypl.pl"})
+public int[] sortwrapper(int low, int high)
+{
+	sort(low, high);
+	return this.arr;
+}
+
+\end{lstlisting}
+\end{minipage}
+
+Table ~\ref{tab:SortWithContract} gives the time metrics for the code given in Listing \ref{QuicksortImprovedContract}.
+
+\begin{table}[htb]
+\caption{Execution Time Metrics for Contract Over sortwrapper Method\label{tab:SortWithContract}}
+\begin{center}
+\begin{tabular}{c||c}
+\hline
+Input Size & Execution Time (In Nano-Seconds) \\
+\hline
+\hline
+100 & 23999612\\
+%\hline
+500 & 206506677\\
+%\hline
+1000 & 472319108\\
+
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+There can be cases, like quicksort program example where, code can be validated once using contracts and once validated there should be some way where developer can bypass the contract system to avoid the time overhead. This way developer can be sure that code is correct and time overhead can be avoided. Code snippet given in the Listing \ref{QuicksortAvoidContract}, shows the modified quicksort code to illustrate this. In this code, original \tt{partition} method which has all the sorting logic wont have any contract associated to it. We will introduce another dummy method \tt{partitionWithContract} which will call the actual \tt{partition} method and will also have contract associated. Once we have this structure in place, now when the developer wants to run the system through the contract system he will call the \tt{partitionWithContract} method whereas when he wants to bypass the contract system he cans imply call the \tt{partition} method.\linebreak
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single, language=Java, captionpos=b, breaklines=true]
+int partition(int low, int high)
+{
+	int pivot = arr[high];
+	int i = (low-1);
+	for(int j=low;j<=high-1;j++)
+	{
+		if(arr[j] <= pivot){
+			i++;
+			int temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
+		}
+	}
+	int temp = arr[i+1];
+	arr[i+1] = arr[high];
+	arr[high] = temp;
+	return i+1;
+}
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[frame=single, language=Java, caption={Quicksort Program with Contract - 3}, label={QuicksortAvoidContract}, captionpos=b, breaklines=true]	
+@Contract(pre_cond = { "" }, post_cond = { "checkPivotValid(ans,@arr)." }, source_files = {"Sublist.pl"})
+int partitionWithContract(int low, int high)
+{
+	return partition(low, high);
+}	
+private void sort(int low, int high)
+{
+	if(low < high){
+	//int pi = partitionWithContract(low,high);
+	int pi = partition(low,high);
+	sort(low, pi-1);
+	sort(pi+1, high);
+	}
+}
+
+\end{lstlisting}
+\end{minipage}
+
+Table \ref{tab:SortBypassContracts} gives the execution time metrics for the code above, where contract system is simply bypassed using the dummy method technique.
+
+\begin{table}[htb]
+\caption{Execution Time Metrics for Quicksort Bypassign Contracts Method\label{tab:SortBypassContracts}}
+\begin{center}
+\begin{tabular}{c||c}
+\hline
+Input Size & Execution Time (In Nano-Seconds) \\
+\hline
+\hline
+100 & 31262.32\\
+%\hline
+500 & 369960\\
+%\hline
+1000 & 538378\\
+
+\hline
+\end{tabular}
+\end{center}
+\end{table}

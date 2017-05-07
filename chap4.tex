@@ -4,16 +4,14 @@ This chapter focuses on the implementation details of my project and how to use 
 
 \section{Java Custom Annotations}
 
-Annotations in Java is an element which provides information or data about the data. It can be termed as a form of metadata which provides more information at run-time or compile-time about the part of the code that is being annotated. Java annotations always start with the \@ symbol and can be of different forms. Some annotations like \@override annotation don't have any elements whereas some annotations like \@SuppressWarnings("unchecked") come with a element defined inside the parentheses. 
-Java also provides a way to define custom annotations type using \@interface. In my library I have used this method to create a custom annotation type "\@contract", using which developers will specify the contracts for their Java methods.
-Below given is the code block for creating the custom annotation type \@contract.
+Annotations in Java can be used to retrieve information or data about the data. It can be termed as a form of metadata which provides more information at run-time or compile-time about the part of the code that is being annotated. Java annotations always start with the \tt{@} symbol and can be of different forms. Some annotations like the \tt{@override} annotation do not have any elements whereas some annotations like \tt{@SuppressWarnings("unchecked")} come with a element defined inside the parentheses. 
+Java also provides a way to define custom annotations using \tt{@interface}. In my library, I have used this method to create a custom \tt{@contract} annotation, which developers can use to specify the contracts for their Java methods.
+Listing \ref{JavaCustomAnnotation} shows code block for creating the custom annotation type \tt{@contract}.
 
-\begin{minipage}{\linewidth}
-\lstset{language=Java, caption=Custom Annotationtype, captionpos=b, breaklines=true, showstringspaces=false}       
-\begin{lstlisting}[frame=single]
+\begin{minipage}{\linewidth}      
+\begin{lstlisting}[frame=single, language=Java, caption={Custom Annotation Type}, label={JavaCustomAnnotation}, captionpos=b, breaklines=true, showstringspaces=false]
 
 package annotations;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -23,31 +21,30 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 
 public @interface Contract {
-		
-		String [] pre_cond () default "";
-		String [] post_cond() default "";
-		String [] source_files() default "no file to load";
+	String [] pre_cond () default "";
+	String [] post_cond() default "";
+	String [] source_files() default "no file to load";
  }
 
 \end{lstlisting}
 \end{minipage}
 
-Target element specifies where exactly the annotation type can be used in the code \cite{JavaAnnotationsTutorial}. In the above implementation it specifies that \@contract annotation type can be used only with methods. 
-\@Retention element specifies till what point in the execution cycle of the code should the annotation of this type be available \cite{JavaAnnotationsTutorial}. In case of \@contract, @Retention specifies that it will be made available till Runtime.   
-\@Contract custom annotation type has 3 elements in it: pre\_cond, post\_cond and source\_files. All these three elements are of type arrays of Strings, that is each element can have multiple string values assigned when writing a contract. All these tree elements come with default values associated to it, which makes them non-compulsory elements of the contract type. Use of each of these elements is as follows:
+
+The \tt{Target} element specifies where the annotation type can be used in the code \cite{JavaAnnotationsTutorial}. In the implementation given in Listing \ref{JavaCustomAnnotation}, it specifies that the \tt{@contract} annotation type can be used only with methods. 
+The \tt{@Retention} element specifies until what point in the execution cycle of the code should the annotation of this type be available \cite{JavaAnnotationsTutorial}. In the case of \tt{@contract}, \tt{@Retention} specifies that it will be made available until runtime.   
+The \tt{@Contract} custom annotation has 3 elements: pre\_cond, post\_cond, and source\_files. All these three elements are string arrays; that is, each element can have multiple string values assigned when writing a contract. All these tree elements come with default values associated to them, which makes them non-compulsory elements of the contract type. Use of each of these elements is as follows:
 \begin{itemize}
 \item pre\_cond: This element is used to specify the preconditions of the contract.
 \item post\_cond: This element is used to specify the postconditions of the contract.
-\item source\_files: This element is used to specify the prolog files which should be referred to validate the preconditions and postconditions.
+\item source\_files: This element is used to specify the Prolog files which should be referred to validate the preconditions and postconditions.
 \end{itemize} 
 
-Below given is an example which illustrates how a contract can be written using above defined \@contract custom annotation type.
+Listing \ref{ContractExample} gives an example that illustrates how a contract can be written using the previously defined  custom annotation type.
 \linebreak
 
 
-\begin{minipage}{\linewidth}
-\lstset{language=Java, caption=using custom annotation to write contract, captionpos=b, breaklines=true}       
-\begin{lstlisting}[frame=single]
+\begin{minipage}{\linewidth}     
+\begin{lstlisting}[frame=single, language=Java, caption={using custom annotation to write contract}, label={ContractExample}, captionpos=b, breaklines=true, showstringspaces=false]
 
 @Contract(
 pre_cond = { "isPositive(amount)", "lessThan(amount, @balance)" }, 
@@ -56,52 +53,51 @@ post_cond = { "checkbalance(ans)" }, source_files = { "bankprolog.pl" })
 \end{lstlisting}
 \end{minipage}
 
-In the above example of a contract, isPositive(amount) and lessThan(amount, \@balance) are declared as preconditions, checkbalance(ans) is the postcondition. "bankprolog.pl" is a Prolog file that is specified as a source for validating the contract conditions.
+In the Listing \ref{ContractExample}, \tt{isPositive(amount)} and \tt{lessThan(amount, \@balance)} are declared as preconditions, \tt{checkbalance(ans)} is the postcondition. "bankprolog.pl" is a Prolog file that is specified as a source for validating the contract conditions.
 
 \section{AspectJ and Reflection}
-Once the contract is specified over a method using /@contract annotation, its conditions should validated at runtime. Specifically, preconditions should be evaluated just before execution point enters the method routine and postconditions should be evaluated immediately after the method has executed. AspectJ, an extension of Java provides this exact granularity and control over the Java program.
-AspectJ is an aspect-oriented programming extension created for the Java programming language \cite{AspectJWiki:online}. It provides pointcuts using which we can specify a a well defined moments in execution of a program such as method call. It also provides before() and after() routines which can be used for implementing precondition and postcondition contracts.
-Below given are the pointcuts that I am using in this library. \linebreak
+Once the contract is specified over a method using the \tt{@contract} annotation, its conditions are validated at runtime. Specifically, preconditions are evaluated just before execution enters the method routine and postconditions should be evaluated immediately after the method has executed. AspectJ, an extension of Java, provides this exact granularity and control over the Java program.
+AspectJ is an aspect-oriented programming extension created for the Java programming language \cite{AspectJWiki:online}. It provides \tt{pointcuts}, which specify well defined moments in the execution of a program, such as a method call \cite{AspectJWiki:online}. It also provides \tt{before()} and \tt{after()} routines which can be used for implementing precondition and postcondition contracts.
+Listing \ref{ApsectJPointcut} pointcuts that I am using in this library. \linebreak
 
-\begin{minipage}{\linewidth}
-\lstset{language=Java, caption=Pointcut in AspectJ, captionpos=b, breaklines=true}       
-\begin{lstlisting}[frame=single]
+\begin{minipage}{\linewidth}       
+\begin{lstlisting}[frame=single, language=Java, caption={Pointcut in AspectJ},label={ApsectJPointcut}, captionpos=b, breaklines=true, showstringspaces=false]
+//pointcut to catch execution context of any method
+pointcut f () : execution (* *(..) ) ;	
 
-pointcut function2 () : execution (* *(..) ) ; // pointcut to catch execution context of any method	
-pointcut function () : @annotation(Contract); // pointcut to catch annotations from the code
-
+//pointcut to catch annotations from the code
+pointcut g () : @annotation(Contract);
 \end{lstlisting}
 \end{minipage} 
 
 \begin{itemize}
-\item function2 : This pointcut is used to catch the execution context of the running Java program. It uses the wild card syntax "(* * (..))" which specifies that, this pintcut will pick the execution moment of any method in the executing Java program, irrespective of its signature. 
+\item f : This pointcut is used to catch the execution context of the running Java program. It uses the wild card syntax "(* * (..))" which specifies that, this pointcut will pick the execution moment of any method in the executing Java program, irrespective of its signature. 
 
-\item function : This pointcut specifically checks for the elemets in the executing Java program that are annotated by Contract annotation type.
+\item g : This pointcut specifically checks for the elements in the executing Java program that are annotated by the Contract annotation type.
 \end{itemize}
 
-Composing these two pointcuts using \&\& operation makes it possible to achieve a poitcut which will be picked up only when a method annotated with Contract annotation is called for execution.
+Composing these two pointcuts using the \&\& operation makes it possible to achieve a pointcut that will be picked up only when a method annotated with the Contract annotation is called for execution. \linebreak
 
-\begin{minipage}{\linewidth}
-\lstset{language=Java, caption=Pointcut Composition and before-after routines, captionpos=b, breaklines=true}       
-\begin{lstlisting}[frame=single]
-
-// joining both the pointcuts it will catch annotations in the execution context
-	before () : function() && function2() 
-	{
-		...
-	}
+\begin{minipage}{\linewidth}       
+\begin{lstlisting}[frame=single, language=Java, caption={Pointcut Composition and before-after routines}, label={beforeafteroutines}, captionpos=b, breaklines=true, showstringspaces=false]
+// Joining both the pointcuts it will catch 
+//annotations in the execution context
+before () : f() && g() 
+{
+	...
+}
 	
-	after () returning ( Object objret ): function () && function2()
-	{
-		...
-	}
+after () returning ( Object objret ): f () && g()
+{
+	...
+}
 \end{lstlisting}
 \end{minipage} 
 
 
 \section{Prolog for Contract Validation}
 
-Prolog is widely known for its implementations in the area of Artificial Intelligence and Natural Language Processing. In my implementation of contract programming, a Prolog file\/s that contain set of facts and rules will form the basis of contract evaluation. To use Prolog for this purpose was first suggested to me by Dr. Thomas Austin. After analyzing and understanding its basic constructs, I found that Prolog's declarative style can be efficiently used to write the set of rules and facts that contracts will confine to. Once you have these rules in place, the library will query the Prolog file to evaluate the validity of the contract conditions.
+Prolog is widely known for its implementations in the area of Artificial Intelligence and Natural Language Processing. In my implementation of contract programming, Prolog files that contain set of facts and rules will form the basis of contract evaluation. After analyzing and understanding its basic constructs, I found that Prolog's declarative style can be efficiently used to write the set of rules and facts to specify contracts. Once you have these rules in place, the library will query the Prolog file to evaluate the validity of the contract conditions.
 
 \subsection{Basic Prolog Constructs and Syntax}
 
@@ -114,19 +110,17 @@ Prolog has three basic constructs that I will be focusing in this part of the ch
 \end{itemize}
 
 \subsubsection{Facts}
-A fact is a simple statement of the form " chinese (chow\_mein). " which results into a True or a False value. Given this fact we can now ask, is chow\_mein a chinese dish ? , which will return a true value. This can be done using Prolog Queries.
+A fact is a simple statement of the form " chinese (chow\_mein). " which results in true or false value. Given this fact, we can now ask \tt{ is chow\_mein a chinese dish ?} , which will return true. This can be done using Prolog Queries.
 
 \subsubsection{Rules}
-A rule is collection of one or more Facts. Multiple facts in conjunction or dis-junction form the result of a Rule. Rules are of the form " nonnegative(Var):- Var >= 0. ". Using this rule one can query and check if a number is positive or not.
+A rule is collection of one or more facts. Multiple facts in conjunction or dis-junction form the result of a rule. Rules are of the form \tt{nonnegative(Var):- Var >= 0. }. Using this rule, one can query and check if a number is positive or not.
 
 \subsubsection{Queries}
-Query is an important construct of the Prolog using which we can ask questions to the Prolog file and get answers from it. Prolog  file contains a one or more facts and rules based on which our queries will be answered. \linebreak
-Below given is an example of a simple Prolog code and associated queries.
+Queries are an important construct of Prolog which allows us to ask questions to the Prolog engine and get answers from it. The Prolog  file contains one or more facts and rules based on which our queries will be answered.
+Listing \ref{PrologQueryExample} gives an example of a simple Prolog code and some associated queries. \linebreak
 
-\begin{minipage}{\linewidth}
-\lstset{caption=Prolog Queries, captionpos=b, breaklines=true}       
-\begin{lstlisting}[frame=single]
-
+\begin{minipage}{\linewidth}    
+\begin{lstlisting}[frame=single, caption={Prolog Queries}, label={PrologQueryExample}, captionpos=b, breaklines=true, showstringspaces=false]
 likes(sam,Food) :-
         indian(Food),
         mild(Food).
@@ -148,12 +142,10 @@ italian(spaghetti).
 \end{lstlisting}
 \end{minipage} 
 
-For the above Prolog program we can formulate different queries as follows,
+For the above Prolog program we can formulate different queries as shown in Listing \ref{PrologProgQueries},
 
-\begin{minipage}{\linewidth}
-\lstset{caption=Prolog example, captionpos=b, breaklines=true}       
-\begin{lstlisting}[frame=single]
-
+\begin{minipage}{\linewidth}       
+\begin{lstlisting}[frame=single, caption={Prolog example}, label={PrologProgQueries}, captionpos=b, breaklines=true]
 ?- likes(sam,What).
 What = chicken_curry ;
 What = chow_mein ;
@@ -164,13 +156,10 @@ What = chips.
 
 ?- likes(sam,pizza).
 true
-
 ?- likes(sam,burger).
 false.
-
 ?- italian(chicken_chillie).
 false.
-
 ?- chinese(chow_mein).
 true.
 
@@ -179,15 +168,14 @@ true.
 
 \subsection{Prolog for Contracts}
 
-Using the facts and rules introduced in the section above we can specify contract rules effectively. To make this easy one has to come up with an algorithm for contract rules, which then can be converted into a Prolog code.Best example for this would be a postcondition contract written for a quicksort partition function. This contract needs to validate that at each iteration a valid pivot is chosen. This contract can be written using custom annotation like this, \@Contract( post\_cond = { "checkPivotValid(ans,\@arr)." }). 
-Once this is done now developer has to think on the algorithm that checkPivotValid should follow. In this case, algorithm would be to check if the selected pivot element is greater all the left elements and less than all the right elements at each iteration. Once the algorithm is decided, it can be easily converted into a Prolog rule. Below given is the Prolog code for this contract.
+Using the facts and rules introduced in the section above we can specify contract rules effectively. Developers can write their own Prolog files to create custom contracts. For instance, a developer might write a postcondition contract for a quicksort partition function. This contract needs to validate that at each iteration a valid pivot is chosen. This contract can be written using custom annotation like this: \tt{@Contract( post\_cond = { "checkPivotValid(ans,@arr)." })}. 
+Once this is done, the developer has to think on the logic that \tt{checkPivotValid} should follow. Here, the logic would check if the selected pivot element is greater than all the left elements and less than all the right elements at each iteration. Once this logic is decided, it can be easily converted into a Prolog rule. Listing \ref{PrologExample} shows the Prolog code for this contract.
 
-\begin{minipage}{\linewidth}
-\lstset{caption=Prolog example, captionpos=b, breaklines=true}       
-\begin{lstlisting}[frame=single]
+\begin{minipage}{\linewidth}       
+\begin{lstlisting}[frame=single, caption={Prolog example}, label={PrologExample} captionpos=b, breaklines=true]
 sublist(S,M,N,[_A|B]):- 
-	M>0, 
-	M<N, 
+	M > 0, 
+	M < N, 
 	sublist(S,M-1,N-1,B).	
 sublist(S,M,N,[A|B]):- 
 	0 is M, 
@@ -209,8 +197,7 @@ checkPivotValid(Pivotindex,List):-
 \end{minipage}
 
 \begin{minipage}{\linewidth}
-\lstset{caption=Prolog example, captionpos=b, breaklines=true}       
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}[frame=single, caption={Prolog example}, captionpos=b, breaklines=true]
 countElements([],0).	
 countElements([_|Xs],Count):-
 	countElements(Xs,Count1),
@@ -239,10 +226,9 @@ JiProlog is a Prolog interpreter written in Java \cite{JIProlog}.As seen in abov
 JIProlog provides APIs using which we can establish this connectivity between a Java and Prolog code \cite{JIProlog}. Using these APIs we can submit a Prolog query from Java code and get the results. This solves the problem of evaluating contract rules from Java.
 
 \begin{minipage}{\linewidth}
-Below given is a code snippet that illustrates connection achieved between Java and Prolog code using JIProlog library APIs.
-
-\lstset{language=Java,caption=Creating JIPEngine instance, captionpos=b, breaklines=true}       
-\begin{lstlisting}[frame=single]
+Listing \ref{JIPrologConnection} shows a code snippet that illustrates connection achieved between Java and Prolog code using JIProlog library APIs.
+     
+\begin{lstlisting}[frame=single, language=Java,caption={Creating JIPEngine instance}, label={JIPrologConnection}, captionpos=b, breaklines=true, showstringspaces=false]
 
 public class JIPInitializer {
 	public final JIPEngine jip = new JIPEngine(); 
@@ -264,10 +250,10 @@ public class JIPInitializer {
 \end{lstlisting}
 \end{minipage}
 
-Above given code snippet illustrates how to create an instance of the JIPEngine class, which then will be used for loading a Prolog file and making API calls. JIPEngine is the main class of the JIProlog library \cite{JIProlog}. It supplies all the methods required for the Java-Prolog connection and making queries. Code snippet below illustrates how to load a Prolog file using JIPEngine instance.
-\begin{minipage}{\linewidth}
-\lstset{language=Java,caption=Loading a Prolog file using JIProlog API, captionpos=b, breaklines=true}       
-\begin{lstlisting}[frame=single]
+Above given code snippet illustrates how to create an instance of the JIPEngine class, which then will be used for loading a Prolog file and making API calls. JIPEngine is the main class of the JIProlog library \cite{JIProlog}. It supplies all the methods required for the Java-Prolog connection and making queries. Code snippet in given in Listing \ref{CodeSnippet} illustrates how to load a Prolog file using JIPEngine instance. \linebreak
+
+\begin{minipage}{\linewidth}       
+\begin{lstlisting}[frame=single, language=Java,caption={Loading a Prolog file using JIProlog API}, label={CodeSnippet}, captionpos=b, breaklines=true, showstringspaces=false]
 public void loadFile(String fileName)
 	{
 		try
@@ -286,10 +272,9 @@ public void loadFile(String fileName)
 JIPEngine's consultFile method compiles and loads the Prolog file, whose name is passed to it as parameter. Once the file is loaded it is ready to be queried using query API's. There are two ways to submit Prolog queries using JIPEngine: Synchronously and asynchronously \cite{JIProlog}. For my library I have used synchronous API calls. 
 
 \begin{minipage}{\linewidth}
-Below snippet shows how we can submit a query using JIPEngine instance and read the solution of the submitted query.
-
-\lstset{language=Java,caption= Prolog Query Using JIProlog API, captionpos=b, breaklines=true}       
-\begin{lstlisting}[frame=single]
+Listing \ref{PrologQueryJIProlog} shows how we can submit a query using JIPEngine instance and read the solution of the submitted query.
+      
+\begin{lstlisting}[frame=single, language=Java, caption={Prolog Query Using JIProlog API}, label={PrologQueryJIProlog}, captionpos=b, breaklines=true, showstringspaces=false]
 JIPQuery jipQuery = jip.openSynchronousQuery(queryString);
 boolean queryResult = readSolution(jipQuery);
 \end{lstlisting}
